@@ -1,7 +1,11 @@
+mod user;
+
 use actix_web::{web, Scope};
 
 pub fn root_scope() -> Scope {
-    web::scope("").service(hello)
+    web::scope("")
+        .service(hello)
+        .service(user::get_users)
 }
 
 use actix_web::{get, HttpResponse, Responder};
