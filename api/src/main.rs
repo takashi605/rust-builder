@@ -4,14 +4,15 @@ mod repository;
 use actix_web::{web, App, HttpServer};
 use anyhow::Result;
 
-use crate::repository::{mysql::user::mysql_user_repository_factory};
+use crate::repository::mysql::MySQLRecordFactory;
+use crate::repository::user::RepositoryFactory;
 
 #[tokio::main]
 async fn main() -> Result<()> {
     println!("Starting server at http://0.0.0.0:8000");
 
     // リポジトリを作成
-    let user_repo = mysql_user_repository_factory()
+    let user_repo = MySQLRecordFactory::user_repo_factory()
         .await
         .expect("Failed to create user repository");
 
