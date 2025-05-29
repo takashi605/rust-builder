@@ -5,7 +5,7 @@ use sqlx::prelude::FromRow;
 
 #[async_trait]
 pub trait RepositoryFactory {
-    async fn user_repo_factory() -> Result<Box<dyn UserRepository>>;
+    async fn create_user_repository() -> Result<Box<dyn UserRepository>>;
 }
 
 #[derive(Serialize, FromRow, Debug)]

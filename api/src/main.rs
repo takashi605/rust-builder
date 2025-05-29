@@ -18,8 +18,8 @@ async fn main() -> Result<()> {
 
     // DBタイプに応じたリポジトリを作成
     let user_repo = match usage_db.as_str() {
-        "postgres" => PostgreSQLRecordFactory::user_repo_factory().await?,
-        _ => MySQLRecordFactory::user_repo_factory().await?, // デフォルトはMySQL
+        "postgres" => PostgreSQLRecordFactory::create_user_repository().await?,
+        _ => MySQLRecordFactory::create_user_repository().await?, // デフォルトはMySQL
     };
 
     // リポジトリをアプリケーションのデータとして共有するためにラップ
