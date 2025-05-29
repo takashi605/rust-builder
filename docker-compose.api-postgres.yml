@@ -1,0 +1,6 @@
+services:
+  api:
+    env_file:
+      - .env.api-postgres
+    depends_on:
+      - postgres

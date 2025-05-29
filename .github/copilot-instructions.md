@@ -133,5 +133,5 @@ CREATE TABLE users (
     - PostgreSQL: `postgres://user:password@localhost:5432/database`
 - 環境変数は `.env.mysql` 及び `.env.postgres` ファイルに定義し、プロジェクトのルートディレクトリに配置します。
 - docker-compose.yml では、`env_file` オプションに `.env.mysql` を指定します。
-- `.env.postgres` を使用する場合は、docker compose up コマンド実行時に --env-file オプションを上書きします。
-  - 実際には make up コマンドを使用して起動するため、Makefile の `up` タスクで環境変数を指定します。
+- `.env.postgres` を使用する場合は、docker compose up コマンド実行時に `docker-compose.api-postgres.yml` を追加指定します。
+  - これにより環境変数をオーバーライドします。
