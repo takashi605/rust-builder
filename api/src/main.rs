@@ -3,28 +3,26 @@ mod repository;
 
 use actix_web::{web, App, HttpServer};
 use anyhow::Result;
-use std::sync::Arc;
 
-use crate::repository::mysql::user::mysql_user_repository_factory;
+use crate::repository::{mysql::user::mysql_user_repository_factory};
 
 #[tokio::main]
 async fn main() -> Result<()> {
     println!("Starting server at http://0.0.0.0:8000");
 
     // リポジトリを作成
-    let user_repository = mysql_user_repository_factory()
+    let user_repo = mysql_user_repository_factory()
         .await
         .expect("Failed to create user repository");
 
-    // リポジトリをArcでラップして共有できるようにする
-    let user_repository = Arc::new(user_repository);
+    // リポジトリをアプリケーションのデータとして共有するためにラップ
+    // web::Data は Arc を内包しているため、スレッドセーフで共有可能
+    let user_repo = web::Data::new(user_repo);
 
     HttpServer::new(move || {
-        let user_repository = Arc::clone(&user_repository);
-
         App::new()
-             // 各ハンドラ関数で共有可能なデータとしてリポジトリを追加
-            .app_data(web::Data::new(user_repository))
+            // 各ハンドラ関数で共有可能なデータとしてリポジトリを追加
+            .app_data(user_repo.clone())
             .service(endpoints::root_scope())
     })
     .bind(("0.0.0.0", 8000))?
