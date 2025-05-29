@@ -1,28 +1,12 @@
-use actix_web::{get, web, HttpResponse, Responder};
-use serde::Serialize;
+use actix_web::{get, HttpResponse, Responder};
 
-#[derive(Serialize)]
-pub struct User {
-    id: i32,
-    name: String,
-    email: String,
-}
+use crate::repository::mysql::user::mysql_user_repository_factory;
 
 #[get("/users")]
 pub async fn get_users() -> impl Responder {
-    // モックデータの作成
-    let users = vec![
-        User {
-            id: 1,
-            name: "山田 太郎".to_string(),
-            email: "taro.yamada@example.com".to_string(),
-        },
-        User {
-            id: 2,
-            name: "佐藤 花子".to_string(),
-            email: "hanako.sato@example.com".to_string(),
-        },
-    ];
+    let repository = mysql_user_repository_factory();
+    let users = repository
+        .find_all();
 
     HttpResponse::Ok().json(users)
 }

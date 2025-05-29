@@ -1,4 +1,5 @@
 mod endpoints;
+mod repository;
 
 use actix_web::{App, HttpServer};
 use anyhow::Result;

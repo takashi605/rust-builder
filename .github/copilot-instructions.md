@@ -35,10 +35,13 @@ users テーブルからすべてのユーザーを取得して返却するエ�
 │   │   ├── main.rs
 │   │   └── repository
 │   │       ├── mod.rs
-│   │       ├── postgres_repository
-│   │       │   └── user_repository.rs
-│   │       └── mysql_repository
-│   │           └── user_repository.rs
+│   │       ├── user.rs
+│   │       ├── postgres
+│   │       │   ├── mod.rs
+│   │       │   └── user.rs
+│   │       └── mysql
+│   │           ├── mod.rs
+│   │           └── user.rs
 │   ├── Cargo.lock
 │   └── Cargo.toml
 ├── docker-compose.yml
