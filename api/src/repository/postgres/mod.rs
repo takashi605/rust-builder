@@ -1,4 +1,4 @@
-use crate::repository::user::{RepositoryFactory, UserRepository};
+use crate::repository::{user::UserRepository, RepositoryFactory};
 use anyhow::Result;
 use async_trait::async_trait;
 

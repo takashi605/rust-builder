@@ -6,7 +6,7 @@ use anyhow::Result;
 
 use crate::repository::mysql::MySQLRecordFactory;
 use crate::repository::postgres::PostgreSQLRecordFactory;
-use crate::repository::user::RepositoryFactory;
+use crate::repository::RepositoryFactory;
 
 #[tokio::main]
 async fn main() -> Result<()> {
