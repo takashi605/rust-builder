@@ -4,10 +4,10 @@ use async_trait::async_trait;
 
 mod user;
 
-pub struct PostgreSQLRecordFactory {}
+pub struct PostgreSQLRepositoryFactory {}
 
 #[async_trait]
-impl RepositoryFactory for PostgreSQLRecordFactory {
+impl RepositoryFactory for PostgreSQLRepositoryFactory {
     async fn create_user_repository() -> Result<Box<dyn UserRepository>> {
         user::postgres_user_repository_factory()
             .await

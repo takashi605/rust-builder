@@ -4,8 +4,8 @@ mod repository;
 use actix_web::{web, App, HttpServer};
 use anyhow::Result;
 
-use crate::repository::mysql::MySQLRecordFactory;
-use crate::repository::postgres::PostgreSQLRecordFactory;
+use crate::repository::mysql::MySQLRepositoryFactory;
+use crate::repository::postgres::PostgreSQLRepositoryFactory;
 use crate::repository::RepositoryFactory;
 
 #[tokio::main]
@@ -18,8 +18,8 @@ async fn main() -> Result<()> {
 
     // DBタイプに応じたリポジトリを作成
     let user_repo = match usage_db.as_str() {
-        "postgres" => PostgreSQLRecordFactory::create_user_repository().await?,
-        _ => MySQLRecordFactory::create_user_repository().await?, // デフォルトはMySQL
+        "postgres" => PostgreSQLRepositoryFactory::create_user_repository().await?,
+        _ => MySQLRepositoryFactory::create_user_repository().await?, // デフォルトはMySQL
     };
 
     // リポジトリをアプリケーションのデータとして共有するためにラップ
