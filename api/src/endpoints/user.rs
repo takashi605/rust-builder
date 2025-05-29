@@ -1,28 +1,10 @@
 use actix_web::{get, web, HttpResponse, Responder};
-use serde::Serialize;
 
-#[derive(Serialize)]
-pub struct User {
-    id: i32,
-    name: String,
-    email: String,
-}
+use crate::repository::user::UserRepository;
 
 #[get("/users")]
-pub async fn get_users() -> impl Responder {
-    // モックデータの作成
-    let users = vec![
-        User {
-            id: 1,
-            name: "山田 太郎".to_string(),
-            email: "taro.yamada@example.com".to_string(),
-        },
-        User {
-            id: 2,
-            name: "佐藤 花子".to_string(),
-            email: "hanako.sato@example.com".to_string(),
-        },
-    ];
+pub async fn get_users(user_repo: web::Data<Box<dyn UserRepository>>) -> impl Responder {
+    let users = user_repo.find_all().await.expect("Failed to fetch users");
 
     HttpResponse::Ok().json(users)
 }

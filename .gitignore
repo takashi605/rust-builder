@@ -1,0 +1,6 @@
+.env
+.env.mysql
+.env.postgres
+.env.api-mysql
+.env.api-postgres
+target
