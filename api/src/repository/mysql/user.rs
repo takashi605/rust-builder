@@ -1,24 +1,36 @@
-use crate::repository::user::{UserRepository, UserRecord};
+use crate::repository::user::{UserRecord, UserRepository};
+use anyhow::Result;
+use async_trait::async_trait;
 
-pub struct MySQLUserRepository {}
+pub struct MySQLUserRepository {
+    pool: sqlx::Pool<sqlx::MySql>,
+}
 
-impl UserRepository for MySQLUserRepository {
-    fn find_all(&self) -> Vec<UserRecord> {
-        vec![
-            UserRecord {
-                id: 1,
-                name: "山田 太郎".to_string(),
-                email: "taro.yamada@example.com".to_string(),
-            },
-            UserRecord {
-                id: 2,
-                name: "佐藤 花子".to_string(),
-                email: "hanako.sato@example.com".to_string(),
-            },
-        ]
+impl MySQLUserRepository {
+    pub fn new(pool: sqlx::Pool<sqlx::MySql>) -> Self {
+        MySQLUserRepository { pool }
     }
 }
 
-pub fn mysql_user_repository_factory() -> Box<dyn UserRepository> {
-    Box::new(MySQLUserRepository {})
+#[async_trait]
+impl UserRepository for MySQLUserRepository {
+    async fn find_all(&self) -> Result<Vec<UserRecord>> {
+        let users = sqlx::query_as::<_, UserRecord>("SELECT id, name, email FROM users")
+            .fetch_all(&self.pool)
+            .await
+            .map_err(|e| anyhow::anyhow!("Failed to fetch users: {}", e))?;
+        println!("{:?}", users);
+        Ok(users)
+    }
+}
+
+pub async fn mysql_user_repository_factory() -> Result<Box<dyn UserRepository>> {
+    let database_url = std::env::var("DATABASE_URL")
+        .expect("DATABASE_URL must be set in the environment variables");
+
+    let pool = sqlx::Pool::<sqlx::MySql>::connect(&database_url)
+        .await
+        .map_err(|e| anyhow::anyhow!("Failed to connect to MySQL: {}", e))?;
+
+    Ok(Box::new(MySQLUserRepository::new(pool)))
 }
