@@ -19,7 +19,6 @@ impl UserRepository for MySQLUserRepository {
             .fetch_all(&self.pool)
             .await
             .map_err(|e| anyhow::anyhow!("Failed to fetch users: {}", e))?;
-        println!("{:?}", users);
         Ok(users)
     }
 }
