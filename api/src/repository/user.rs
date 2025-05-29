@@ -11,6 +11,6 @@ pub struct UserRecord {
 }
 
 #[async_trait]
-pub trait UserRepository {
+pub trait UserRepository: Send + Sync {
     async fn find_all(&self) -> Result<Vec<UserRecord>>;
 }

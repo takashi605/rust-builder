@@ -1,13 +1,11 @@
-use actix_web::{get, HttpResponse, Responder};
+use actix_web::{get, web, HttpResponse, Responder};
+use std::sync::Arc;
 
-use crate::repository::mysql::user::mysql_user_repository_factory;
+use crate::repository::user::UserRepository;
 
 #[get("/users")]
-pub async fn get_users() -> impl Responder {
-    let repository = mysql_user_repository_factory()
-        .await
-        .expect("Failed to create MySQL user repository");
-    let users = repository
+pub async fn get_users(user_repo: web::Data<Arc<Box<dyn UserRepository>>>) -> impl Responder {
+    let users = user_repo
         .find_all()
         .await
         .expect("Failed to fetch users");

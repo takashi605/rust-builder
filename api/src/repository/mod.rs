@@ -1,2 +1,2 @@
 pub mod mysql;
-mod user;
+pub mod user;
