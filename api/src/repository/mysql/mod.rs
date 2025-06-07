@@ -9,7 +9,7 @@ pub struct MySQLRepositoryFactory {}
 #[async_trait]
 impl RepositoryFactory for MySQLRepositoryFactory {
     async fn create_user_repository() -> Result<Box<dyn UserRepository>> {
-        user::mysql_user_repository_factory()
+        user::create_mysql_user_repository()
             .await
             .map_err(|e| anyhow::anyhow!("Failed to create MySQL user repository: {}", e))
     }

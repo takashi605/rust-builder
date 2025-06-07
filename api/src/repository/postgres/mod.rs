@@ -9,7 +9,7 @@ pub struct PostgreSQLRepositoryFactory {}
 #[async_trait]
 impl RepositoryFactory for PostgreSQLRepositoryFactory {
     async fn create_user_repository() -> Result<Box<dyn UserRepository>> {
-        user::postgres_user_repository_factory()
+        user::create_postgres_user_repository()
             .await
             .map_err(|e| anyhow::anyhow!("Failed to create PostgreSQL user repository: {}", e))
     }

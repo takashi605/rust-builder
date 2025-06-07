@@ -23,7 +23,7 @@ impl UserRepository for PostgreSQLUserRepository {
     }
 }
 
-pub async fn postgres_user_repository_factory() -> Result<Box<dyn UserRepository>> {
+pub async fn create_postgres_user_repository() -> Result<Box<dyn UserRepository>> {
     let database_url = std::env::var("DATABASE_URL")
         .expect("DATABASE_URL must be set in the environment variables");
 
