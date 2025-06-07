@@ -6,6 +6,7 @@ init:
 	cp .env.postgres.example .env.postgres
 	cp .env.api-mysql.example .env.api-mysql
 	cp .env.api-postgres.example .env.api-postgres
+	cd api && cargo check --workspace --all-targets --all-features
 
 # MySQL環境でコンテナを起動
 up:
