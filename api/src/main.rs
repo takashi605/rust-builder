@@ -34,7 +34,6 @@ async fn main() -> Result<()> {
     })
     .bind(("0.0.0.0", 8000))?
     .run()
-    .await?;
-
-    Ok(())
+    .await
+    .map_err(|e| anyhow::anyhow!("Failed to start server: {}", e))
 }
