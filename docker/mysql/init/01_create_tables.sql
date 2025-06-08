@@ -6,7 +6,7 @@ CREATE TABLE users (
 );
 
 -- サンプルデータの挿入
-INSERT INTO users (name, email) VALUES ('山田 太郎', 'taro.yamada@example.com');
+INSERT INTO users (name, email) VALUES ('マイエス 太郎', 'mysql@example.com');
 INSERT INTO users (name, email) VALUES ('佐藤 花子', 'hanako.sato@example.com');
 INSERT INTO users (name, email) VALUES ('鈴木 一郎', 'ichiro.suzuki@example.com');
 INSERT INTO users (name, email) VALUES ('田中 直子', 'naoko.tanaka@example.com');

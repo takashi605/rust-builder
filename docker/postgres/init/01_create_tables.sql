@@ -7,6 +7,6 @@ CREATE TABLE users (
 
 -- サンプルデータの挿入
 INSERT INTO users (name, email) VALUES
-    ('山田太郎', 'taro.yamada@example.com'),
+    ('ポスグレ太郎', 'postgres@example.com'),
     ('佐藤花子', 'hanako.sato@example.com'),
     ('鈴木一郎', 'ichiro.suzuki@example.com');
