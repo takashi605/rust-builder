@@ -1,0 +1,10 @@
+services:
+  api-test:
+    build:
+      context: .
+      dockerfile: containers/api-test/Dockerfile
+    restart: no
+    volumes:
+      - ./crates/api-test:/app
+    profiles:
+      - test
