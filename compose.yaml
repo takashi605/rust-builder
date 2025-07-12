@@ -5,6 +5,6 @@ services:
       dockerfile: containers/api-test/Dockerfile
     restart: no
     volumes:
-      - ./crates/api-test:/app
+      - ./crates/api_test:/app
     profiles:
       - test

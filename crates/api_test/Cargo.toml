@@ -1,5 +1,5 @@
 [package]
-name = "api-test"
+name = "api_test"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,3 +8,5 @@ anyhow = "1.0"
 graphql_client = "0.14"
 reqwest = { version = "0.12", features = ["json"] }
 tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

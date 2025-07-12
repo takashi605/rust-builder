@@ -1,3 +1,5 @@
+pub mod learning;
+
 #[cfg(test)]
 mod tests {
     #[test]
