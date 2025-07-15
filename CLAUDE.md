@@ -1,11 +1,10 @@
 # このリポジトリについて
 Rust でデザインパターンを実装してみる学習記録リポジトリです。
-Abstract Factory パターンを使って環境ごとの DB の繋ぎ変えを実現していきます。
+Builder パターンでクエリビルダーを作って、環境ごとのビルダー変更等を実現していきます。
 
 ## プロジェクト要件
-users テーブルからすべてのユーザーを取得して返却するエンドポイントを実装していく
-　エンドポイント：/users
-アプリケーションコード上では、DB はリポジトリパターンによって表現する
+1. users テーブルを扱う CRUD エンドポイントを定義する
+2. mysql,postgres の各リポジトリでクエリビルダーを使うようにする
 
 ## 仕様技術
 使用言語：Rust
@@ -27,29 +26,40 @@ users テーブルからすべてのユーザーを取得して返却するエ�
 ※.github 等、一部のファイル/ディレクトリは省略
 
 ```
-├── api
-│   ├── src
-│   │   ├── endpoints
+├── api/
+│   ├── src/
+│   │   ├── endpoints/
 │   │   │   ├── mod.rs
 │   │   │   └── user.rs
 │   │   ├── main.rs
-│   │   └── repository
+│   │   ├── query_builder/
+│   │   │  │── mod.rs
+│   │   │  │── directors/
+│   │   │  │  ├── mod.rs
+│   │   │  │  └── user.rs
+│   │   │  └── builders/
+│   │   │      ├── postgres/
+│   │   │      │ ├── mod.rs
+│   │   │      │ └── user.rs
+│   │   │      └── mysql/
+│   │   │          ├── mod.rs
+│   │   │          └── user.rs
+│   │   └── repository/
 │   │       ├── mod.rs
 │   │       ├── user.rs
-│   │       ├── postgres
+│   │       ├── postgres/
 │   │       │   ├── mod.rs
 │   │       │   └── user.rs
-│   │       └── mysql
+│   │       └── mysql/
 │   │           ├── mod.rs
 │   │           └── user.rs
 │   ├── Cargo.lock
 │   └── Cargo.toml
 ├── docker-compose.yml
-├── docker
+├── docker/
 │   ├── Dockerfile
 │   └── entrypoint.sh
 └── Makefile
-
 ```
 
 ## エラーハンドリング
