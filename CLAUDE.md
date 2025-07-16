@@ -145,3 +145,6 @@ CREATE TABLE users (
 - docker-compose.yml では、`env_file` オプションに `.env.mysql` を指定します。
 - `.env.postgres` を使用する場合は、docker compose up コマンド実行時に `docker-compose.api-postgres.yml` を追加指定します。
   - これにより環境変数をオーバーライドします。
+
+## コミュニケーション
+- Claude Code とのやり取りは日本語で行います。
