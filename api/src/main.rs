@@ -4,9 +4,7 @@ mod repository;
 use actix_web::{web, App, HttpServer};
 use anyhow::Result;
 
-use crate::repository::mysql::MySQLRepositoryFactory;
-use crate::repository::postgres::PostgreSQLRepositoryFactory;
-use crate::repository::RepositoryFactory;
+use crate::repository::{MySQLRepositoryFactory, PostgreSQLRepositoryFactory, RepositoryFactory};
 
 #[tokio::main]
 async fn main() -> Result<()> {

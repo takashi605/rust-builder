@@ -2,6 +2,9 @@ pub mod mysql;
 pub mod postgres;
 pub mod user;
 
+pub use mysql::MySQLRepositoryFactory;
+pub use postgres::PostgreSQLRepositoryFactory;
+
 use async_trait::async_trait;
 use anyhow::Result;
 use crate::repository::user::UserRepository;
