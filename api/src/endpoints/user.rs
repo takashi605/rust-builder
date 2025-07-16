@@ -27,8 +27,8 @@ pub async fn create_user(
         email: req.email.clone(),
     };
 
-    match user_repo.create(user).await {
-        Ok(_) => HttpResponse::Created().json(serde_json::json!({"message": "User created successfully"})),
-        Err(e) => HttpResponse::InternalServerError().json(serde_json::json!({"error": format!("Failed to create user: {}", e)})),
+    match user_repo.create_or_update(user).await {
+        Ok(_) => HttpResponse::Created().json(serde_json::json!({"message": "User created or updated successfully"})),
+        Err(e) => HttpResponse::InternalServerError().json(serde_json::json!({"error": format!("Failed to create or update user: {}", e)})),
     }
 }

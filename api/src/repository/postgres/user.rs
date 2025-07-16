@@ -22,13 +22,13 @@ impl UserRepository for PostgreSQLUserRepository {
         Ok(users)
     }
 
-    async fn create(&self, user: UserRecord) -> Result<()> {
-        sqlx::query("INSERT INTO users (name, email) VALUES ($1, $2)")
+    async fn create_or_update(&self, user: UserRecord) -> Result<()> {
+        sqlx::query("INSERT INTO users (name, email) VALUES ($1, $2) ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name")
             .bind(&user.name)
             .bind(&user.email)
             .execute(&self.pool)
             .await
-            .map_err(|e| anyhow::anyhow!("Failed to create user: {}", e))?;
+            .map_err(|e| anyhow::anyhow!("Failed to create or update user: {}", e))?;
         Ok(())
     }
 }

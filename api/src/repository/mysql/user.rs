@@ -22,13 +22,13 @@ impl UserRepository for MySQLUserRepository {
         Ok(users)
     }
 
-    async fn create(&self, user: UserRecord) -> Result<()> {
-        sqlx::query("INSERT INTO users (name, email) VALUES (?, ?)")
+    async fn create_or_update(&self, user: UserRecord) -> Result<()> {
+        sqlx::query("INSERT INTO users (name, email) VALUES (?, ?) ON DUPLICATE KEY UPDATE name = VALUES(name)")
             .bind(&user.name)
             .bind(&user.email)
             .execute(&self.pool)
             .await
-            .map_err(|e| anyhow::anyhow!("Failed to create user: {}", e))?;
+            .map_err(|e| anyhow::anyhow!("Failed to create or update user: {}", e))?;
         Ok(())
     }
 }
