@@ -27,4 +27,4 @@ COPY api/bacon.toml ./
 EXPOSE 8000
 
 # baconでホットリロード
-CMD ["bacon", "--headless" ,"run-api"]
+CMD ["bacon", "--headless", "run-api"]
