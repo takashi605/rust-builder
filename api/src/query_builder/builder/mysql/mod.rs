@@ -9,7 +9,7 @@ impl MysqlQueryBuilder {
         }
     }
 
-    pub fn build(mut self) -> String {
+    pub fn build(self) -> String {
         self.query
     }
 
