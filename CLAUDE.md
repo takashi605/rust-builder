@@ -39,11 +39,9 @@ Builder パターンでクエリビルダーを作って、環境ごとのビル
 │   │   │  │  └── user.rs
 │   │   │  └── builders/
 │   │   │      ├── postgres/
-│   │   │      │ ├── mod.rs
-│   │   │      │ └── user.rs
+│   │   │      │ └── mod.rs
 │   │   │      └── mysql/
-│   │   │          ├── mod.rs
-│   │   │          └── user.rs
+│   │   │          └── mod.rs
 │   │   └── repository/
 │   │       ├── mod.rs
 │   │       ├── user.rs

@@ -26,3 +26,6 @@ down:
 # コンテナをビルド
 build:
 	docker compose build
+
+test:
+	docker compose exec api cargo test --workspace --all-targets --all-features
