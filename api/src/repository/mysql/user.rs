@@ -21,6 +21,16 @@ impl UserRepository for MySQLUserRepository {
             .map_err(|e| anyhow::anyhow!("Failed to fetch users: {}", e))?;
         Ok(users)
     }
+
+    async fn create_or_update(&self, user: UserRecord) -> Result<()> {
+        sqlx::query("INSERT INTO users (name, email) VALUES (?, ?) ON DUPLICATE KEY UPDATE name = VALUES(name)")
+            .bind(&user.name)
+            .bind(&user.email)
+            .execute(&self.pool)
+            .await
+            .map_err(|e| anyhow::anyhow!("Failed to create or update user: {}", e))?;
+        Ok(())
+    }
 }
 
 pub async fn create_mysql_user_repository() -> Result<Box<dyn UserRepository>> {

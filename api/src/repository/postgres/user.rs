@@ -21,6 +21,16 @@ impl UserRepository for PostgreSQLUserRepository {
             .map_err(|e| anyhow::anyhow!("Failed to fetch users: {}", e))?;
         Ok(users)
     }
+
+    async fn create_or_update(&self, user: UserRecord) -> Result<()> {
+        sqlx::query("INSERT INTO users (name, email) VALUES ($1, $2) ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name")
+            .bind(&user.name)
+            .bind(&user.email)
+            .execute(&self.pool)
+            .await
+            .map_err(|e| anyhow::anyhow!("Failed to create or update user: {}", e))?;
+        Ok(())
+    }
 }
 
 pub async fn create_postgres_user_repository() -> Result<Box<dyn UserRepository>> {

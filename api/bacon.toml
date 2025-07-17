@@ -1,0 +1,11 @@
+[jobs.run-api]
+command = ["cargo", "run"]
+need_stdout = true
+watch = ["src", "Cargo.toml"]
+on_change_strategy = "kill_then_restart"
+allow_warnings = true
+
+[env]
+CARGO_INCREMENTAL = "1"
+RUST_LOG = "debug"
+RUST_BACKTRACE = "1"
