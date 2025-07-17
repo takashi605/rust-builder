@@ -14,16 +14,22 @@ RUN apt-get update && \
 RUN cargo install bacon
 
 # 依存関係のキャッシュ層
+# Cargo.tomlとCargo.lockのみをコピー
 COPY api/Cargo.toml api/Cargo.lock* ./
+
+# ダミーのmain.rsを作成して依存関係をビルド
 RUN mkdir -p src && \
   echo "fn main() {}" > src/main.rs && \
+  cargo build --release && \
   cargo build && \
   rm -rf src
 
+# キャッシュを保持するために、targetディレクトリを明示的に保持
 # ソースコードとbacon設定のコピー
-COPY api/src ./src
 COPY api/bacon.toml ./
+COPY api/src ./src
 
+# 開発時はコンテナ起動後にビルドが走る（baconが監視）
 EXPOSE 8000
 
 # baconでホットリロード
