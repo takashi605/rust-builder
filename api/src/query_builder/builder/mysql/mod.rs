@@ -1,4 +1,4 @@
-struct MysqlQueryBuilder {
+pub struct MysqlQueryBuilder {
     query: String,
 }
 
