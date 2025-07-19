@@ -26,7 +26,7 @@ mod tests {
     fn test_select_users_director() {
         let builder = MysqlQueryBuilder::new();
         let director = SelectUsersDirector::new(builder);
-        let build_query = director.build_query();
-        assert_eq!(build_query, "SELECT id, name, email FROM users");
+        let query = director.build_query();
+        assert_eq!(query, "SELECT id, name, email FROM users");
     }
 }
