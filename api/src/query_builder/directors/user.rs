@@ -1,17 +1,17 @@
 use crate::query_builder::builder::mysql::MysqlQueryBuilder;
 
 struct SelectUsersDirector {
-    query: String,
+    builder: MysqlQueryBuilder,
 }
 impl SelectUsersDirector {
-    pub fn new() -> Self {
+    pub fn new(builder: MysqlQueryBuilder) -> Self {
         SelectUsersDirector {
-            query: String::new(),
+            builder,
         }
     }
 
-    pub fn build_query(&self) -> String {
-        MysqlQueryBuilder::new()
+    pub fn build_query(self) -> String {
+        self.builder
             .select(vec!["id", "name", "email"])
             .from("users")
             .build()
@@ -24,7 +24,8 @@ mod tests {
 
     #[test]
     fn test_select_users_director() {
-        let director = SelectUsersDirector::new();
+        let builder = MysqlQueryBuilder::new();
+        let director = SelectUsersDirector::new(builder);
         let build_query = director.build_query();
         assert_eq!(build_query, "SELECT id, name, email FROM users");
     }
