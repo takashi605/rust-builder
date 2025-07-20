@@ -29,6 +29,8 @@ RUN mkdir -p src && \
 COPY api/bacon.toml ./
 COPY api/src ./src
 
+RUN cargo build
+
 # 開発時はコンテナ起動後にビルドが走る（baconが監視）
 EXPOSE 8000
 
