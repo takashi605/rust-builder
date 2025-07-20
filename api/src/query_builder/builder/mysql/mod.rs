@@ -1,3 +1,6 @@
+// ステートフルな構造体のため Clone を実装
+// Mutex+Arc 等を使用しても良いが、そこまで大きなデータは扱わないのでシンプルに Clone で対応
+#[derive(Clone)]
 pub struct MysqlQueryBuilder {
     query: String,
 }
@@ -38,5 +41,14 @@ mod tests {
             .from("users")
             .build();
         assert_eq!(query, "SELECT id, name, email FROM users");
+    }
+
+    #[test]
+    fn test_clone_query_builder() {
+        let builder = MysqlQueryBuilder::new()
+            .select(vec!["id", "name", "email"])
+            .from("users");
+        let cloned_builder = builder.clone();
+        assert_eq!(builder.build(), cloned_builder.build());
     }
 }
