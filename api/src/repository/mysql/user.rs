@@ -4,19 +4,19 @@ use async_trait::async_trait;
 
 pub struct MySQLUserRepository {
     pool: sqlx::Pool<sqlx::MySql>,
+    builder: MysqlQueryBuilder,
 }
 
 impl MySQLUserRepository {
-    pub fn new(pool: sqlx::Pool<sqlx::MySql>) -> Self {
-        MySQLUserRepository { pool }
+    pub fn new(pool: sqlx::Pool<sqlx::MySql>, builder: MysqlQueryBuilder) -> Self {
+        MySQLUserRepository { pool, builder }
     }
 }
 
 #[async_trait]
 impl UserRepository for MySQLUserRepository {
     async fn find_all(&self) -> Result<Vec<UserRecord>> {
-        let builder = MysqlQueryBuilder::new();
-        let director = SelectUsersDirector::new(builder);
+        let director = SelectUsersDirector::new(self.builder.clone());
         let query = director.build_query();
 
         let users = sqlx::query_as::<_, UserRecord>(&query)
@@ -44,6 +44,7 @@ pub async fn create_mysql_user_repository() -> Result<Box<dyn UserRepository>> {
     let pool = sqlx::Pool::<sqlx::MySql>::connect(&database_url)
         .await
         .map_err(|e| anyhow::anyhow!("Failed to connect to MySQL: {}", e))?;
+    let query_builder = MysqlQueryBuilder::new();
 
-    Ok(Box::new(MySQLUserRepository::new(pool)))
+    Ok(Box::new(MySQLUserRepository::new(pool, query_builder)))
 }
