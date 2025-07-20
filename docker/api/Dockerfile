@@ -2,13 +2,20 @@ FROM rust:1.87-slim
 
 ENV RUST_ENV=development
 
-WORKDIR /app
-
 # ビルド依存パッケージのインストール
 RUN apt-get update && \
-  apt-get install -y pkg-config libssl-dev && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/*
+apt-get install -y pkg-config libssl-dev && \
+apt-get clean && \
+rm -rf /var/lib/apt/lists/*
+
+# グループとユーザーを追加
+RUN groupadd -g 1000 rust && \
+    useradd -s /bin/bash -u 1000 -g rust rust
+
+# ユーザーを切り替え
+USER rust:rust
+
+WORKDIR /app
 
 # baconのインストール
 RUN cargo install bacon
