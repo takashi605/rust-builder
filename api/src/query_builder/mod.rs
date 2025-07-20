@@ -1,6 +1,6 @@
-mod builder {
-    pub(super) mod mysql;
+pub mod builder {
+    pub mod mysql;
 }
-mod directors {
-    mod user;
+pub mod directors {
+    pub mod user;
 }

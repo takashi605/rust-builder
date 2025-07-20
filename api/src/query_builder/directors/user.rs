@@ -1,6 +1,6 @@
 use crate::query_builder::builder::mysql::MysqlQueryBuilder;
 
-struct SelectUsersDirector {
+pub struct SelectUsersDirector {
     builder: MysqlQueryBuilder,
 }
 impl SelectUsersDirector {

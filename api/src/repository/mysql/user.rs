@@ -1,4 +1,4 @@
-use crate::repository::user::{UserRecord, UserRepository};
+use crate::{query_builder::{builder::mysql::MysqlQueryBuilder, directors::user::SelectUsersDirector}, repository::user::{UserRecord, UserRepository}};
 use anyhow::Result;
 use async_trait::async_trait;
 
@@ -15,7 +15,11 @@ impl MySQLUserRepository {
 #[async_trait]
 impl UserRepository for MySQLUserRepository {
     async fn find_all(&self) -> Result<Vec<UserRecord>> {
-        let users = sqlx::query_as::<_, UserRecord>("SELECT id, name, email FROM users")
+        let builder = MysqlQueryBuilder::new();
+        let director = SelectUsersDirector::new(builder);
+        let query = director.build_query();
+
+        let users = sqlx::query_as::<_, UserRecord>(&query)
             .fetch_all(&self.pool)
             .await
             .map_err(|e| anyhow::anyhow!("Failed to fetch users: {}", e))?;
