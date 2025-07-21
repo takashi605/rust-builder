@@ -32,7 +32,6 @@ impl QueryBuilder for MysqlQueryBuilder {
 
 #[cfg(test)]
 mod tests {
-    use std::vec;
 
     use super::*;
 
