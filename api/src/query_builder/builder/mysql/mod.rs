@@ -1,3 +1,5 @@
+use crate::query_builder::builder::QueryBuilder;
+
 // ステートフルな構造体のため Clone を実装
 // Mutex+Arc 等を使用しても良いが、そこまで大きなデータは扱わないのでシンプルに Clone で対応
 #[derive(Clone)]
@@ -5,24 +7,24 @@ pub struct MysqlQueryBuilder {
     query: String,
 }
 
-impl MysqlQueryBuilder {
-    pub fn new() -> Self {
+impl QueryBuilder for MysqlQueryBuilder {
+    fn new() -> Self {
         MysqlQueryBuilder {
             query: String::new(),
         }
     }
 
-    pub fn build(self) -> String {
+    fn build(self) -> String {
         self.query
     }
 
-    pub fn select(mut self, columns: Vec<&str>) -> Self {
+    fn select(mut self, columns: Vec<&str>) -> Self {
         let columns_str = columns.join(", ");
         self.query = format!("SELECT {}", columns_str);
         self
     }
 
-    pub fn from(mut self, table: &str) -> Self {
+    fn from(mut self, table: &str) -> Self {
         self.query = format!("{} FROM {}", self.query, table);
         self
     }

@@ -1,4 +1,4 @@
-use crate::query_builder::builder::mysql::MysqlQueryBuilder;
+use crate::query_builder::builder::{mysql::MysqlQueryBuilder, QueryBuilder};
 
 pub struct SelectUsersDirector {
     builder: MysqlQueryBuilder,
