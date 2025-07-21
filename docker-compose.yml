@@ -12,7 +12,10 @@ services:
     depends_on:
       - mysql
     volumes:
-      - ./api:/app
+      - type: bind
+        source: ./api
+        target: /app
+      - /app/target  # targetディレクトリはコンテナ内のものを使用（キャッシュ保持）
 
   mysql:
     build:

@@ -1,5 +1,6 @@
 mod endpoints;
 mod repository;
+mod query_builder;
 
 use actix_web::{web, App, HttpServer};
 use anyhow::Result;

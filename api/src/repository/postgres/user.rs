@@ -1,21 +1,25 @@
-use crate::repository::user::{UserRecord, UserRepository};
+use crate::{query_builder::{builder::{postgres::PostgresQueryBuilder, QueryBuilder}, directors::user::SelectUsersDirector}, repository::user::{UserRecord, UserRepository}};
 use anyhow::Result;
 use async_trait::async_trait;
 
 pub struct PostgreSQLUserRepository {
     pool: sqlx::Pool<sqlx::Postgres>,
+    builder: PostgresQueryBuilder,
 }
 
 impl PostgreSQLUserRepository {
-    pub fn new(pool: sqlx::Pool<sqlx::Postgres>) -> Self {
-        PostgreSQLUserRepository { pool }
+    pub fn new(pool: sqlx::Pool<sqlx::Postgres>, builder: PostgresQueryBuilder) -> Self {
+        PostgreSQLUserRepository { pool, builder }
     }
 }
 
 #[async_trait]
 impl UserRepository for PostgreSQLUserRepository {
     async fn find_all(&self) -> Result<Vec<UserRecord>> {
-        let users = sqlx::query_as::<_, UserRecord>("SELECT id, name, email FROM users")
+        let director = SelectUsersDirector::new(self.builder.clone());
+        let query = director.build_query();
+
+        let users = sqlx::query_as::<_, UserRecord>(&query)
             .fetch_all(&self.pool)
             .await
             .map_err(|e| anyhow::anyhow!("Failed to fetch users: {}", e))?;
@@ -40,6 +44,7 @@ pub async fn create_postgres_user_repository() -> Result<Box<dyn UserRepository>
     let pool = sqlx::Pool::<sqlx::Postgres>::connect(&database_url)
         .await
         .map_err(|e| anyhow::anyhow!("Failed to connect to PostgreSQL: {}", e))?;
+    let query_builder = PostgresQueryBuilder::new();
 
-    Ok(Box::new(PostgreSQLUserRepository::new(pool)))
+    Ok(Box::new(PostgreSQLUserRepository::new(pool, query_builder)))
 }
