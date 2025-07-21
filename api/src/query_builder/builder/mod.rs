@@ -1,4 +1,5 @@
 pub mod mysql;
+pub mod postgres;
 
 pub trait QueryBuilder {
     fn new() -> Self;

@@ -30,4 +30,13 @@ mod tests {
         let query = director.build_query();
         assert_eq!(query, "SELECT id, name, email FROM users");
     }
+
+    #[test]
+    fn test_select_users_director_with_postgres() {
+        use crate::query_builder::builder::postgres::PostgresQueryBuilder;
+        let builder = PostgresQueryBuilder::new();
+        let director = SelectUsersDirector::new(builder);
+        let query = director.build_query();
+        assert_eq!(query, "SELECT id, name, email FROM users");
+    }
 }
