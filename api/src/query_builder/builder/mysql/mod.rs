@@ -79,7 +79,7 @@ mod tests {
         assert_eq!(query, "SELECT id, name, email FROM users");
     }
 
-        #[test]
+    #[test]
     fn test_build_upsert_user_query() {
         let query = MysqlQueryBuilder::new()
             .insert("users")
