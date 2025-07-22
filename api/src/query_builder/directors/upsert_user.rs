@@ -23,17 +23,6 @@ impl<B: QueryBuilder> UpsertUserDirector<B> {
 #[cfg(test)]
 mod tests{
     use super::*;
-    
-    #[test]
-    fn test_upsert_user_director_with_postgres() {
-        use crate::query_builder::builder::{postgres::PostgresQueryBuilder, QueryBuilder};
-
-        let builder = PostgresQueryBuilder::new();
-        let director = UpsertUserDirector::new(builder);
-        let query = director.build_query("takashi", "takashi@example.com");
-
-        assert_eq!(query, "INSERT INTO users (name, email) VALUES (takashi, takashi@example.com) ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name");
-    }
 
     #[test]
     fn test_upsert_user_director_with_mysql() {
@@ -45,4 +34,16 @@ mod tests{
 
         assert_eq!(query, "INSERT INTO users (name, email) VALUES (\"takashi\", \"takashi@example.com\") ON DUPLICATE KEY UPDATE name = VALUES(name)");
     }
+
+    #[test]
+    fn test_upsert_user_director_with_postgres() {
+        use crate::query_builder::builder::{postgres::PostgresQueryBuilder, QueryBuilder};
+
+        let builder = PostgresQueryBuilder::new();
+        let director = UpsertUserDirector::new(builder);
+        let query = director.build_query("takashi", "takashi@example.com");
+
+        assert_eq!(query, "INSERT INTO users (name, email) VALUES ('takashi', 'takashi@example.com') ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name");
+    }
+
 }

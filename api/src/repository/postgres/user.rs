@@ -1,4 +1,4 @@
-use crate::{query_builder::{builder::{postgres::PostgresQueryBuilder, QueryBuilder}, directors::select_user::SelectUsersDirector}, repository::user::{UserRecord, UserRepository}};
+use crate::{query_builder::{builder::{postgres::PostgresQueryBuilder, QueryBuilder}, directors::{select_user::SelectUsersDirector, upsert_user::UpsertUserDirector}}, repository::user::{UserRecord, UserRepository}};
 use anyhow::Result;
 use async_trait::async_trait;
 
@@ -27,9 +27,11 @@ impl UserRepository for PostgreSQLUserRepository {
     }
 
     async fn create_or_update(&self, user: UserRecord) -> Result<()> {
-        sqlx::query("INSERT INTO users (name, email) VALUES ($1, $2) ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name")
-            .bind(&user.name)
-            .bind(&user.email)
+        let upsert_director = UpsertUserDirector::new(self.builder.clone());
+        let upsert_query = upsert_director.build_query(&user.name, &user.email);
+        println!("Upsert Query: {}", upsert_query);
+
+        sqlx::query(&upsert_query)
             .execute(&self.pool)
             .await
             .map_err(|e| anyhow::anyhow!("Failed to create or update user: {}", e))?;

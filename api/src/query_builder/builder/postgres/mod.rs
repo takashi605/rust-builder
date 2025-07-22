@@ -47,7 +47,11 @@ impl QueryBuilder for PostgresQueryBuilder {
     }
     
     fn values(mut self, values: Vec<&str>) -> Self {
-        let values_str = values.join(", ");
+        let values_str = values
+            .iter()
+            .map(|v| format!("'{}'", v))
+            .collect::<Vec<_>>()
+            .join(", ");
         self.query = format!("{} VALUES ({})", self.query, values_str);
         self
     }
@@ -89,7 +93,7 @@ mod tests {
             .on_conflict("email")
             .do_update(vec!["name"])
             .build();
-        assert_eq!(query, "INSERT INTO users (name, email) VALUES (takashi, takashi@example.com) ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name");
+        assert_eq!(query, "INSERT INTO users (name, email) VALUES ('takashi', 'takashi@example.com') ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name");
     }
 
 
