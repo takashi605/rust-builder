@@ -32,7 +32,7 @@ mod tests{
         let director = UpsertUserDirector::new(builder);
         let query = director.build_query("takashi", "takashi@example.com");
 
-        assert_eq!(query, "INSERT INTO users (name, email) VALUES (\"takashi\", \"takashi@example.com\") ON DUPLICATE KEY UPDATE name = VALUES(name)");
+        assert_eq!(query, "INSERT INTO users (name, email) VALUES ('takashi', 'takashi@example.com') ON DUPLICATE KEY UPDATE name = VALUES(name)");
     }
 
     #[test]
