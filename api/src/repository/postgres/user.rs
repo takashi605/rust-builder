@@ -29,7 +29,6 @@ impl UserRepository for PostgreSQLUserRepository {
     async fn create_or_update(&self, user: UserRecord) -> Result<()> {
         let upsert_director = UpsertUserDirector::new(self.builder.clone());
         let upsert_query = upsert_director.build_query(&user.name, &user.email);
-        println!("Upsert Query: {}", upsert_query);
 
         sqlx::query(&upsert_query)
             .execute(&self.pool)
