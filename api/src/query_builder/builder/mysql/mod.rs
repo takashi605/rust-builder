@@ -30,7 +30,6 @@ impl QueryBuilder for MysqlQueryBuilder {
     }
 
     // Insert 用のメソッド
-
     fn insert(mut self, table: &str) -> Self {
         self.query = format!("INSERT INTO {}", table);
         self
@@ -48,6 +47,8 @@ impl QueryBuilder for MysqlQueryBuilder {
         self
     }
 
+    // postgres とは異なり、競合対象のカラムは指定できないので、引数を握りつぶしている
+    // key や unique index が重複した場合に update する
     fn on_conflict(mut self, _conflict_column: &str) -> Self {
         self.query = format!("{} ON DUPLICATE KEY UPDATE", self.query);
         self
