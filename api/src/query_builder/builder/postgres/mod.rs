@@ -31,35 +31,33 @@ impl QueryBuilder for PostgresQueryBuilder {
         self.query = format!("{} FROM {}", self.query, table);
         self
     }
-}
 
-impl PostgresQueryBuilder {
     /* 
      * Insert 用のメソッド
      */
-    pub fn insert(mut self, table: &str) -> Self {
+    fn insert(mut self, table: &str) -> Self {
         self.query = format!("INSERT INTO {}", table);
         self
     }
-
-    pub fn into(mut self, columns: Vec<&str>) -> Self {
+    
+    fn columns(mut self, columns: Vec<&str>) -> Self {
         let columns_str = columns.join(", ");
         self.query = format!("{} ({})", self.query, columns_str);
         self
     }
-
-    pub fn values(mut self, values: Vec<&str>) -> Self {
+    
+    fn values(mut self, values: Vec<&str>) -> Self {
         let values_str = values.join(", ");
         self.query = format!("{} VALUES ({})", self.query, values_str);
         self
     }
-
-    pub fn on_conflict(mut self, conflict_column: &str) -> Self {
+    
+    fn on_conflict(mut self, conflict_column: &str) -> Self {
         self.query = format!("{} ON CONFLICT ({})", self.query, conflict_column);
         self
     }
-
-    pub fn do_update(mut self, update_columns: Vec<&str>) -> Self {
+    
+    fn do_update(mut self, update_columns: Vec<&str>) -> Self {
         let updates_str = update_columns.join(", ");
         self.query = format!("{} DO UPDATE SET {} = EXCLUDED.{}", self.query, updates_str, updates_str);
         self
@@ -86,7 +84,7 @@ mod tests {
     fn test_build_upsert_user_query() {
         let query = PostgresQueryBuilder::new()
             .insert("users")
-            .into(vec!["name", "email"])
+            .columns(vec!["name", "email"])
             .values(vec!["takashi", "takashi@example.com"])
             .on_conflict("email")
             .do_update(vec!["name"])
