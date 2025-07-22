@@ -1,4 +1,4 @@
-use crate::{query_builder::{builder::{postgres::PostgresQueryBuilder, QueryBuilder}, directors::user::SelectUsersDirector}, repository::user::{UserRecord, UserRepository}};
+use crate::{query_builder::{builder::{postgres::PostgresQueryBuilder, QueryBuilder}, directors::select_user::SelectUsersDirector}, repository::user::{UserRecord, UserRepository}};
 use anyhow::Result;
 use async_trait::async_trait;
 
