@@ -15,7 +15,7 @@ impl<B: QueryBuilder> UpsertUserDirector<B> {
             .columns(vec!["name", "email"])
             .values(vec![name, email])
             .on_conflict("email")
-            .do_update(vec!["name"])
+            .do_update("name")
             .build()
     }
 }

@@ -60,10 +60,9 @@ impl QueryBuilder for PostgresQueryBuilder {
         self.query = format!("{} ON CONFLICT ({})", self.query, conflict_column);
         self
     }
-    
-    fn do_update(mut self, update_columns: Vec<&str>) -> Self {
-        let updates_str = update_columns.join(", ");
-        self.query = format!("{} DO UPDATE SET {} = EXCLUDED.{}", self.query, updates_str, updates_str);
+
+    fn do_update(mut self, update_column: &str) -> Self {
+        self.query = format!("{} DO UPDATE SET {} = EXCLUDED.{}", self.query, update_column, update_column);
         self
     }
 }
@@ -91,7 +90,7 @@ mod tests {
             .columns(vec!["name", "email"])
             .values(vec!["takashi", "takashi@example.com"])
             .on_conflict("email")
-            .do_update(vec!["name"])
+            .do_update("name")
             .build();
         assert_eq!(query, "INSERT INTO users (name, email) VALUES ('takashi', 'takashi@example.com') ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name");
     }

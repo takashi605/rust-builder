@@ -58,9 +58,8 @@ impl QueryBuilder for MysqlQueryBuilder {
         self
     }
 
-    fn do_update(mut self, update_columns: Vec<&str>) -> Self {
-        let update_str = update_columns.join(", ");
-        self.query = format!("{} {} = VALUES({})", self.query, update_str, update_str);
+    fn do_update(mut self, update_column: &str) -> Self {
+        self.query = format!("{} {} = VALUES({})", self.query, update_column, update_column);
         self
     }
 }
@@ -86,7 +85,7 @@ mod tests {
             .columns(vec!["name", "email"])
             .values(vec!["takashi", "takashi@example.com"])
             .on_conflict("email")
-            .do_update(vec!["name"])
+            .do_update("name")
             .build();
 
         assert_eq!(query, "INSERT INTO users (name, email) VALUES ('takashi', 'takashi@example.com') ON DUPLICATE KEY UPDATE name = VALUES(name)");

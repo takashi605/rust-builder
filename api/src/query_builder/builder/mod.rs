@@ -16,5 +16,5 @@ pub trait QueryBuilder {
 
     // upsert 用のメソッド
     fn on_conflict(self, conflict_column: &str) -> Self;
-    fn do_update(self, update_columns: Vec<&str>) -> Self;
+    fn do_update(self, update_columns: &str) -> Self;
 }
